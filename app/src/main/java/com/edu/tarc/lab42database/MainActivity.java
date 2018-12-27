@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,6 +58,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Add the functionality to swipe items in the
+        // recycler view to delete that item
+        ItemTouchHelper helper = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(0,
+                        ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                        int position = viewHolder.getAdapterPosition();
+                        User myUser = userAdapter.getUserAtPosition(position);
+                        Toast.makeText(MainActivity.this, "Deleting " + myUser.getFirstName() + " " + myUser.getLastName(), Toast.LENGTH_LONG).show();
+                        // Delete the word
+                        userViewModel.deleteUser(myUser);
+                    }
+                });
+        helper.attachToRecyclerView(recyclerView);
     }
 
     @Override

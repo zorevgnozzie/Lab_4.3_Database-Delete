@@ -65,4 +65,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         userList = users;
         notifyDataSetChanged(); //Inform ViewModel of any data change
     }
+
+    public User getUserAtPosition(int position) {
+        return userList.get(position);
+    }
 }
